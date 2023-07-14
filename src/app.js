@@ -3,6 +3,7 @@ import connectDB from "./config/database";
 import dotenv from "dotenv";
 import cors from "cors";
 import ProductRuoter from "./routes/Product";
+import CategoryRouter from "./routes/Category";
 dotenv.config();
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 
 //Router
 app.use("/api",ProductRuoter)
+app.use('/api',CategoryRouter);  
 // KẾT NỐI MONGO
 connectDB(process.env.MONGO_URL);
 
