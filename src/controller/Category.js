@@ -98,13 +98,18 @@ export const create = async (req, res) => {
 };
 export const deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-    if (!category || category.length === 0) {
-      return res.status(400).json({
-        message: "không tìm thấy danh mục",
-      });
-    }
-    return res.json({ message: "xóa danh mục thành công", category });
+    const categoryId = req.params.id;
+
+    // Xóa tất cả sản phẩm thuộc danh mục
+    await Product.deleteMany({ categoryId });
+
+    // Xóa danh mục
+    const category = await Category.findByIdAndDelete(categoryId);
+
+    return res.json({
+      message: "Xóa danh mục thành công!",
+      category,
+    });
   } catch (error) {
     return res.status(400).json({
       message: error.message,

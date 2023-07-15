@@ -72,18 +72,24 @@ const getOne = async (req, res) => {
 };
 const deleteProduct = async (req, res) => {
   try {
-    const product = await product.findByIdAndDelete(req.params.id);
-    if (!product || product.length == 0) {
-      return res.status(400).json({
-        message: "không tìm thấy sản phẩm",
-      });
-    }
-    res.json({
-      message: "Xóa thành công ",
+    const productId = req.params.id;
+
+    // Xóa sản phẩm
+    const product = await Product.findByIdAndDelete(productId);
+
+    // Xóa sản phẩm khỏi danh mục
+    await Category.findByIdAndUpdate(product.categoryId, {
+      $pull: {
+        products: productId,
+      },
+    });
+
+    return res.json({
+      message: "Xóa sản phẩm thành công!",
       product,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
     });
   }
