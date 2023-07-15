@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import Product from "../model/Product";
 import { ProductSchema } from "../schemas/Product";
+import Category from "../model/Category";
 dotenv.config;
 
 const getall = async (req, res) => {
@@ -79,9 +80,7 @@ const deleteProduct = async (req, res) => {
 
     // Xóa sản phẩm khỏi danh mục
     await Category.findByIdAndUpdate(product.categoryId, {
-      $pull: {
-        products: productId,
-      },
+      $pull: { products: product._id },
     });
 
     return res.json({
@@ -96,13 +95,15 @@ const deleteProduct = async (req, res) => {
 };
 const createProduct = async (req, res) => {
   const { product_name } = req.body;
+  const formData = req.body;
   try {
-    const { error } = ProductSchema.validate(req.body);
+    const { error } = ProductSchema.validate(formData);
     if (error) {
       return res.status(400).json({
         message: error.details[0].message,
       });
     }
+    // Kiểm tra xem sản phẩm đã tồn tại hay chưa
     const data = await Product.findOne({ product_name });
     if (data) {
       return res.status(400).json({
@@ -110,12 +111,17 @@ const createProduct = async (req, res) => {
       });
     }
 
-    const product = await Product.create(req.body);
+    const product = await Product.create(formData);
     if (!product || product.length == 0) {
       return res.status(400).json({
         message: "không tìm thấy sản phẩm",
       });
     }
+
+    await Category.findByIdAndUpdate(product.categoryId, {
+      $addToSet: { products: product._id },
+    });
+
     return res.status(400).json({
       message: "thêm thành công ",
       product,
@@ -127,7 +133,11 @@ const createProduct = async (req, res) => {
   }
 };
 const updateProduct = async (req, res) => {
+  const formData = req.body;
+  const id = req.params.id;
+  const { product_name } = req.body;
   try {
+    // KIỂM TRA XEM TÊN SẢN PHẨM ĐÃ TỒN TẠI TRONG DATABASE CHƯA
     const data = await Product.findOne({ product_name });
     if (data) {
       return res.status(400).json({
@@ -135,16 +145,38 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    const { error } = ProductSchema.validate(req.body);
+    // VALIDATE
+    const { error } = ProductSchema.validate(formData);
     if (error) {
       return res.status(400).json({
         message: error.details[0].message,
       });
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    //Lấy lại category cũ
+    const oldData = await Product.findById(id);
+    const oldCategory = await oldData.categoryId;
+
+    // Update product
+    const product = await Product.findByIdAndUpdate(id, formData, {
       new: true,
     });
+
+    // Xóa product ở category cũ
+    await Category.findByIdAndUpdate(
+      {
+        _id: oldCategory,
+      },
+      {
+        $pull: { products: product._id },
+      },
+      { new: true }
+    );
+
+    await Category.findByIdAndUpdate(product.categoryId, {
+      $addToSet: { products: product._id },
+    });
+
     if (!product || product.length == 0) {
       return res.status(400).json({
         message: "không tìm thấy sản phẩm",
@@ -152,6 +184,7 @@ const updateProduct = async (req, res) => {
     }
     res.json({
       message: "Cập nhật thành công",
+      product,
     });
   } catch (error) {
     res.status(400).json({

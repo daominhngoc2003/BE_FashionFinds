@@ -1,4 +1,5 @@
 import Category from "../model/Category";
+import Product from "../model/Product";
 import { categorySchema } from "../schemas/Category";
 
 export const getAllcategory = async (req, res) => {
