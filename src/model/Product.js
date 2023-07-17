@@ -26,12 +26,12 @@ const ProductSchema = new mongoose.Schema(
       type: Object,
       require: true,
     },
-    product_deScription_sort: {
+    product_description_sort: {
       type: String,
       minlength: 6,
       maxlength: 255,
     },
-    product_deScription_long: {
+    product_description_long: {
       type: String,
       minlength: 6,
       maxlength: 255,
@@ -42,9 +42,9 @@ const ProductSchema = new mongoose.Schema(
       minlength: 0,
       maxlength: 1000,
     },
-    product_status: {
-      type: Boolean,
-    },
+    // product_status: {
+    //   type: Boolean,
+    // },
     categoryId: {
       type: mongoose.Types.ObjectId,
       ref: "Category",
