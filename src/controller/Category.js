@@ -141,3 +141,26 @@ export const updateCategory = async (req, res) => {
     });
   }
 };
+
+export const getCategoryProducts = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const category = await Category.findById(categoryId).populate('products');
+    
+    if (!category) {
+      return res.status(400).json({
+        message: "Không tìm thấy danh mục",
+      });
+    }
+
+    const products = category.products;
+    return res.json({
+      message: "Lấy danh sách sản phẩm theo danh mục thành công",
+      products,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
