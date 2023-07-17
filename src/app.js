@@ -1,5 +1,6 @@
 import express from "express";
 import connectDB from "./config/database";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import ProductRuoter from "./routes/Product";
@@ -18,7 +19,8 @@ app.use("/api", CategoryRouter);
 app.use("/api", uploadRouter);
 
 // KẾT NỐI MONGO
-connectDB(process.env.MONGO_URL);
+// connectDB(process.env.MONGO_URL);
+mongoose.connect("mongodb://127.0.0.1:27017/nodejs-review")
 
 // VITENODEAPP
 export const viteNodeApp = app;
