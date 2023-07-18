@@ -48,7 +48,7 @@ export const getAllcategory = async (req, res) => {
     });
   }
 };
-export const get = async (req, res) => {
+export const getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category || category.length === 0) {
@@ -61,6 +61,21 @@ export const get = async (req, res) => {
     return res.status(400).json({
       message: error.message,
     });
+  }
+};
+
+export const getCategoryBySlug = async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const data = await Category.findOne({ slug });
+    if (!data) {
+      return res.status(404).json({
+        message: "Không tìm thấy danh mục",
+      });
+    }
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(400).json({ success: false, message: error });
   }
 };
 export const create = async (req, res) => {
