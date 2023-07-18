@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import slug from "mongoose-slug-generator";
 const ProductSchema = new mongoose.Schema(
   {
     product_name: {
@@ -50,10 +51,14 @@ const ProductSchema = new mongoose.Schema(
       ref: "Category",
       require: true,
     },
+    slug: {
+      type: String,
+      slug: "product_name",
+    },
   },
   { timestamps: true, versionKey: false }
 );
-
+mongoose.plugin(slug);
 ProductSchema.plugin(mongoosePaginate);
 
 export default mongoose.model("Product", ProductSchema);

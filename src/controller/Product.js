@@ -53,7 +53,7 @@ const getall = async (req, res) => {
     });
   }
 };
-const getOne = async (req, res) => {
+export const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product || product.length == 0) {
@@ -71,6 +71,25 @@ const getOne = async (req, res) => {
     });
   }
 };
+
+export const getProductBySlug = async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const product = await Product.findOne({ slug });
+    if (!product || product.length === 0) {
+      return res.status(404).json({
+        message: "Không tìm thấy sản phẩm",
+      });
+    }
+    return res.status(200).json({
+      product,
+      message: "Lấy sản phẩm thành công",
+    });
+  } catch (error) {
+    return res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -122,7 +141,7 @@ const createProduct = async (req, res) => {
       $addToSet: { products: product._id },
     });
 
-    return res.status(400).json({
+    return res.status(200).json({
       message: "thêm thành công ",
       product,
     });
@@ -192,4 +211,4 @@ const updateProduct = async (req, res) => {
     });
   }
 };
-export { getOne, getall, createProduct, deleteProduct, updateProduct };
+export { getall, createProduct, deleteProduct, updateProduct };

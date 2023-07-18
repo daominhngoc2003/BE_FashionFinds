@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-
+import slug from "mongoose-slug-generator";
 const categorySchema = new mongoose.Schema(
   {
     category_name: {
@@ -18,9 +18,13 @@ const categorySchema = new mongoose.Schema(
         require: true,
       },
     ],
+    slug: {
+      type: String,
+      slug: "category_name",
+    },
   },
   { timestamps: true, versionKey: false }
 );
-
+mongoose.plugin(slug);
 categorySchema.plugin(mongoosePaginate);
 export default mongoose.model("Category", categorySchema);
