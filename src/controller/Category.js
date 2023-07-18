@@ -1,6 +1,6 @@
 import Category from "../model/Category";
 import Product from "../model/Product";
-import { categorySchema } from "../schemas/Category";
+import { categorySchema, categoryUpdateSchema } from "../schemas/Category";
 
 export const getAllcategory = async (req, res) => {
   const {
@@ -81,7 +81,6 @@ export const create = async (req, res) => {
       });
     }
     const category = await Category.create(formData);
-    console.log(category);
     if (!category || category.length === 0) {
       return res.status(400).json({
         message: "không tìm thấy danh mục",
@@ -119,17 +118,29 @@ export const deleteCategory = async (req, res) => {
 };
 export const updateCategory = async (req, res) => {
   const { category_name } = req.body;
+  const id = req.params.id;
+  const formData = req.body;
   try {
+    // Validate
+    const { error } = categoryUpdateSchema.validate(formData, {
+      abortEarly: false,
+    });
+    if (error) {
+      return res.status(400).json({
+        message: error.details[0].message,
+      });
+    }
+    // KIỂM TRA XEM CATEGORY ĐÃ TỒN TẠI
     const data = await Category.findOne({ category_name });
     if (data) {
       return res.status(400).json({
         message: "danh mục đã tồn tại",
       });
     }
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+    const category = await Category.findByIdAndUpdate(id, formData, {
       new: true,
     });
-    if (!category || category.length === 0) {
+    if (!category || category.length == 0) {
       return res.status(400).json({
         message: "không tìm thấy danh mục",
       });
