@@ -141,7 +141,7 @@ const createProduct = async (req, res) => {
       $addToSet: { products: product._id },
     });
 
-    return res.status(400).json({
+    return res.status(200).json({
       message: "thêm thành công ",
       product,
     });
