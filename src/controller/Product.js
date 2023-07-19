@@ -36,7 +36,6 @@ const getall = async (req, res) => {
 
     const searchDataProduct = await searchData(products);
     const productResponse = await { ...products, docs: searchDataProduct };
-    console.log(productResponse);
 
     res.status(200).json({
       message: "Lấy thành công ",
@@ -211,4 +210,4 @@ const updateProduct = async (req, res) => {
     });
   }
 };
-export { getall, createProduct, deleteProduct, updateProduct };
+export { getOne, getall, createProduct, deleteProduct, updateProduct };
