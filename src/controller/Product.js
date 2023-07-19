@@ -210,4 +210,4 @@ const updateProduct = async (req, res) => {
     });
   }
 };
-export { getOne, getall, createProduct, deleteProduct, updateProduct };
+export { getall, createProduct, deleteProduct, updateProduct };
