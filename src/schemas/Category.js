@@ -9,4 +9,5 @@ export const categoryUpdateSchema = joi.object({
   createdAt: joi.date(),
   products: joi.array(),
   updatedAt: joi.date(),
+  slug: joi.string(),
 });

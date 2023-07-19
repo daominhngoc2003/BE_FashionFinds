@@ -25,4 +25,5 @@ export const ProductUpdateSchema = Joi.object({
   product_quantity: Joi.number(),
   categoryId: Joi.string().required(),
   createdAt: Joi.date(),
+  // slug: Joi.string(),
 });

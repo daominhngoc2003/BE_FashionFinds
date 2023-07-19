@@ -132,11 +132,11 @@ export const deleteCategory = async (req, res) => {
   }
 };
 export const updateCategory = async (req, res) => {
-  // const { category_name } = req.body;
+  const { category_name } = req.body;
   const id = req.params.id;
   const formData = req.body;
   try {
-    // Validate
+    Validate;
     const { error } = categoryUpdateSchema.validate(formData, {
       abortEarly: false,
     });
@@ -146,12 +146,12 @@ export const updateCategory = async (req, res) => {
       });
     }
     // KIỂM TRA XEM CATEGORY ĐÃ TỒN TẠI
-    // const data = await Category.findOne({ category_name });
-    // if (data) {
-    //   return res.status(400).json({
-    //     message: "danh mục đã tồn tại",
-    //   });
-    // }
+    const data = await Category.findOne({ category_name });
+    if (data) {
+      return res.status(400).json({
+        message: "danh mục đã tồn tại",
+      });
+    }
     const category = await Category.findByIdAndUpdate(id, formData, {
       new: true,
     });

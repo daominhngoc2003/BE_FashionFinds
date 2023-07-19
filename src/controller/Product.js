@@ -164,12 +164,12 @@ const updateProduct = async (req, res) => {
     // }
 
     // VALIDATE
-    const { error } = ProductSchema.validate(formData);
-    if (error) {
-      return res.status(400).json({
-        message: error.details[0].message,
-      });
-    }
+    // const { error } = ProductSchema.validate(formData);
+    // if (error) {
+    //   return res.status(400).json({
+    //     message: error.details[0].message,
+    //   });
+    // }
 
     //Lấy lại category cũ
     const oldData = await Product.findById(id);
