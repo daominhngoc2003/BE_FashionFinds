@@ -154,15 +154,15 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   const formData = req.body;
   const id = req.params.id;
-  const { product_name } = req.body;
+  // const { product_name } = req.body;
   try {
     // KIỂM TRA XEM TÊN SẢN PHẨM ĐÃ TỒN TẠI TRONG DATABASE CHƯA
-    const data = await Product.findOne({ product_name });
-    if (data) {
-      return res.status(400).json({
-        message: "Sản phẩm đã tồn tại",
-      });
-    }
+    // const data = await Product.findOne({ product_name });
+    // if (data) {
+    //   return res.status(400).json({
+    //     message: "Sản phẩm đã tồn tại",
+    //   });
+    // }
 
     // VALIDATE
     const { error } = ProductSchema.validate(formData);
