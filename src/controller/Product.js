@@ -210,4 +210,32 @@ const updateProduct = async (req, res) => {
     });
   }
 };
+export const getProductByCategory = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const products = await Product.find({ categoryId: id });
+    if (!products)
+      return res.status(404).json({
+        message: "Không tìm thấy sản phấm chứa danh mục này!",
+        success: false,
+      });
+
+    const productResponse = await { docs: products };
+    return res.status(200).json({
+      message: "Oke nè!",
+      success: true,
+      productResponse,
+      pagination: {
+        currentPage: products.page,
+        totalPages: products.totalPages,
+        totalItems: products.totalDocs,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      mes: error?.message,
+    });
+  }
+};
 export { getall, createProduct, deleteProduct, updateProduct };
