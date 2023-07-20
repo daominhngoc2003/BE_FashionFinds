@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import slugify from "slugify";
 import Product from "../model/Product";
 import { ProductSchema } from "../schemas/Product";
 import Category from "../model/Category";
@@ -12,6 +13,7 @@ const getall = async (req, res) => {
     _order = "asc",
     _keywords = "",
   } = req.query;
+
   const option = {
     page: _page,
     limit: _limit,
@@ -153,32 +155,28 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   const formData = req.body;
   const id = req.params.id;
-  // const { product_name } = req.body;
+  const { product_name } = req.body;
   try {
-    // KIỂM TRA XEM TÊN SẢN PHẨM ĐÃ TỒN TẠI TRONG DATABASE CHƯA
-    // const data = await Product.findOne({ product_name });
-    // if (data) {
-    //   return res.status(400).json({
-    //     message: "Sản phẩm đã tồn tại",
-    //   });
-    // }
-
     // VALIDATE
-    // const { error } = ProductSchema.validate(formData);
-    // if (error) {
-    //   return res.status(400).json({
-    //     message: error.details[0].message,
-    //   });
-    // }
-
+    const { error } = ProductSchema.validate(formData, { abortEarly: false });
+    if (error) {
+      return res.status(400).json({
+        message: error.details[0].message,
+      });
+    }
+    const newSlug = slugify(product_name, { lower: true });
     //Lấy lại category cũ
     const oldData = await Product.findById(id);
     const oldCategory = await oldData.categoryId;
 
     // Update product
-    const product = await Product.findByIdAndUpdate(id, formData, {
-      new: true,
-    });
+    const product = await Product.findByIdAndUpdate(
+      id,
+      { ...formData, slug: newSlug },
+      {
+        new: true,
+      }
+    );
 
     // Xóa product ở category cũ
     await Category.findByIdAndUpdate(

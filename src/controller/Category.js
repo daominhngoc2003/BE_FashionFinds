@@ -1,6 +1,7 @@
 import Category from "../model/Category";
 import Product from "../model/Product";
 import { categorySchema, categoryUpdateSchema } from "../schemas/Category";
+import slugify from "slugify";
 
 export const getAllcategory = async (req, res) => {
   const {
@@ -136,7 +137,6 @@ export const updateCategory = async (req, res) => {
   const id = req.params.id;
   const formData = req.body;
   try {
-    Validate;
     const { error } = categoryUpdateSchema.validate(formData, {
       abortEarly: false,
     });
@@ -146,15 +146,21 @@ export const updateCategory = async (req, res) => {
       });
     }
     // KIỂM TRA XEM CATEGORY ĐÃ TỒN TẠI
-    const data = await Category.findOne({ category_name });
-    if (data) {
-      return res.status(400).json({
-        message: "danh mục đã tồn tại",
-      });
-    }
-    const category = await Category.findByIdAndUpdate(id, formData, {
-      new: true,
-    });
+    // const data = await Category.findOne({ category_name });
+    // if (data) {
+    //   return res.status(400).json({
+    //     message: "Tên danh mục đã tồn tại",
+    //   });
+    // }
+    const newSlug = slugify(category_name, { lower: true });
+
+    const category = await Category.findByIdAndUpdate(
+      id,
+      { ...formData, slug: newSlug },
+      {
+        new: true,
+      }
+    );
     if (!category || category.length == 0) {
       return res.status(400).json({
         message: "không tìm thấy danh mục",
