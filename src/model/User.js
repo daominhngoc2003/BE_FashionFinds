@@ -1,19 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  user_firstname: {
-    type: String,
-    require: true,
-    min: 1,
-    maxlength: 55,
-  },
-  user_fullname: {
-    type: String,
-    require: true,
-    min: 1,
-    maxlength: 55,
-  },
-  user_lastname: {
+  user_fullName: {
     type: String,
     require: true,
     min: 1,
@@ -53,10 +41,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
     enum: ["nam", "nu", "khac"],
+    default: "khac",
   },
   user_status: {
     type: String,
     enum: ["active", "ban"],
+    default: "active",
   },
   user_date_of_birth: {
     type: Date,

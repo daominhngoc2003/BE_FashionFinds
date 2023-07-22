@@ -19,9 +19,13 @@ const ProductSchema = new mongoose.Schema(
     },
     product_size: {
       type: String,
+      enum: ["xl", "x", "m", "freeSize", "2xl", "29", "30", "31", "32"],
+      default: "freeSize",
     },
     product_color: {
       type: String,
+      enum: ["xanh", "trang", "den"],
+      default: "den",
     },
     product_images: {
       type: Object,
