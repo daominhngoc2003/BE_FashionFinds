@@ -57,6 +57,7 @@ const userSchema = new mongoose.Schema({
   user_status: {
     type: String,
     enum: ["active", "ban"],
+    default: "active",
   },
   user_date_of_birth: {
     type: Date,

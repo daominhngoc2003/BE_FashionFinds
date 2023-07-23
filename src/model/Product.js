@@ -7,7 +7,6 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       require: true,
       minlength: 3,
-      maxlength: 50,
     },
     product_price: {
       type: Number,
@@ -29,13 +28,9 @@ const ProductSchema = new mongoose.Schema(
     },
     product_description_sort: {
       type: String,
-      minlength: 6,
-      maxlength: 255,
     },
     product_description_long: {
       type: String,
-      minlength: 6,
-      maxlength: 255,
     },
     product_quantity: {
       type: Number,
@@ -51,6 +46,8 @@ const ProductSchema = new mongoose.Schema(
       ref: "Category",
       require: true,
     },
+    review_count: { type: Number, require: true, default: 0 },
+    average_score: { type: Number, require: true, default: 0 },
     slug: {
       type: String,
       slug: "product_name",
