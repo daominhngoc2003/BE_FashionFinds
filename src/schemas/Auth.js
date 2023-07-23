@@ -1,9 +1,8 @@
 import joi from "joi";
 
 export const signupSchema = joi.object({
-  user_firstname: joi.string(),
-  user_lastname: joi.string(),
-  user_fullname: joi.string(),
+  user_fullName: joi.string(),
+  user_phone: joi.number(),
   user_email: joi.string().email().required().messages({
     "string.email": "Email không đúng định dạng",
     "string.empty": "Email không được để trống",
