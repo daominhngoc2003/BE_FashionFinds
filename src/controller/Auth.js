@@ -34,12 +34,21 @@ export const login = async (req, res) => {
     user.user_password = undefined;
 
     // tạo access token
-    const accessToken = generalAccessToken(user);
+    const accessToken = generalAccessToken({
+      _id: user._id,
+      user_email,
+      user_fullName: user.user_fullName,
+      user_avatar: user.user_avatar,
+      user_role: user.user_role,
+    });
+    // const accessToken = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
+    //   expiresIn: "1h",
+    // });
     // tạo refresh token
     const refreshToken = generalRefreshToken({
       _id: user._id,
       user_email,
-      user_fullname: user.user_fullname,
+      user_fullName: user.user_fullName,
       user_avatar: user.user_avatar,
       user_role: user.user_role,
     });
@@ -47,7 +56,7 @@ export const login = async (req, res) => {
       message: "Đăng nhập thành công",
       user,
       accessToken,
-      // refreshToken,
+      refreshToken,
     });
   } catch (error) {
     return res.status(500).json({
@@ -58,13 +67,8 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   try {
-    const {
-      user_email,
-      user_password,
-      user_firstname,
-      user_lastname,
-      user_confirmPassword,
-    } = req.body;
+    const { user_email, user_password, user_fullName, user_confirmPassword } =
+      req.body;
 
     // VALIDATE
     const { error } = signupSchema.validate(req.body, { abortEarly: false });
@@ -86,8 +90,7 @@ export const register = async (req, res) => {
 
     const user = await User.create({
       user_email,
-      user_firstname,
-      user_lastname,
+      user_fullName,
       user_password: hashPassword,
     });
 
@@ -97,8 +100,7 @@ export const register = async (req, res) => {
     const accessToken = generalAccessToken({
       _id: user.id,
       user_email,
-      user_firstname: user.user_firstname,
-      user_lastname: user.user_lastname,
+      user_fullName: user.user_fullName,
       user_avatar: user.user_avatar,
       user_role: user.user_role,
     });

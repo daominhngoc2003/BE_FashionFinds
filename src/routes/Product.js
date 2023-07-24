@@ -12,7 +12,7 @@ import { authorization } from "../middleware/Authorization";
 const Router = express.Router();
 Router.get("/products", getall);
 Router.get("/products/:id", getProductById);
-Router.delete("/products/:id", deleteProduct);
+Router.delete("/products/:id", authenticate, authorization, deleteProduct);
 Router.put("/products/:id", updateProduct);
 Router.post("/products", createProduct);
 // Router.delete("/products/:id", authenticate, authorization, deleteProduct);
