@@ -50,8 +50,8 @@ const ProductSchema = new mongoose.Schema(
       ref: "Category",
       require: true,
     },
-    review_count: { type: Number, require: true, default: 0 },
-    average_score: { type: Number, require: true, default: 0 },
+    review_count: { type: Number, default: 0 },
+    average_score: { type: Number, default: 0 },
     slug: {
       type: String,
       slug: "product_name",

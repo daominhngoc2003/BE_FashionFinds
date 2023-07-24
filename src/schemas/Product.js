@@ -28,4 +28,6 @@ export const ProductUpdateSchema = Joi.object({
   createdAt: Joi.date(),
   updatedAt: Joi.date(),
   slug: Joi.string(),
+  review_count: Joi.number(),
+  average_score: Joi.number(),
 });
