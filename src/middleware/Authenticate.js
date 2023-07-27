@@ -16,15 +16,29 @@ export const authenticate = async (req, res, next) => {
     const token = authHeader.split(" ")[1];
     const secretKey = process.env.SECRET_KEY;
 
-    const { _id } = jwt.verify(token, secretKey);
-    const user = await User.findById(_id);
-    if (!user) {
-      return res.status(400).json({
-        message: "Không tìm tháy người dùng",
-      });
-    }
-    req.user = user;
-    next();
+    jwt.verify(token, secretKey, async (error, payload) => {
+      if (error) {
+        if (error.name === "JsonWebTokenError") {
+          return res.status(401).json({
+            message: "Token không hợp lệ",
+          });
+        }
+        if (error.name == "TokenExpiredError") {
+          return res.status(401).json({
+            message: "Token hết hạn",
+          });
+        }
+      }
+
+      const user = await User.findById(payload._id);
+      if (!user) {
+        return res.status(400).json({
+          message: "Không tìm tháy người dùng",
+        });
+      }
+      req.user = user;
+      next();
+    });
   } catch (error) {
     return res.status(401).json({
       message: error.message,
