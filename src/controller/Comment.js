@@ -111,12 +111,62 @@ export const getCommentByProduct = async (req, res) => {
 export const getAllComments = async (req, res) => {
   try {
     const comments = await Comment.find();
-    if (true) {
-      return res.status(200).json({
-        comments,
-        message: "Get All Comments",
+    if (!comments || comments.length === 0) {
+      return res.status(400).json({
+        message: "Không tìm thấy bình luận nào",
       });
     }
+    return res.status(200).json({
+      comments,
+      message: "lấy danh sách bình luận thành công",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const searchComment = async (req, res) => {
+  const {
+    _page = 1,
+    _limit = 10,
+    _sort = "createAt",
+    _order = "asc",
+    _keywords = "",
+  } = req.query;
+
+  const option = {
+    limit: _limit,
+    page: _page,
+    sort: {
+      [_sort]: _order === "desc" ? 1 : -1,
+    },
+  };
+  try {
+    const searchData = (comments) => {
+      return comments?.docs?.filter((item) =>
+        item?.review?.toLowerCase().includes(_keywords)
+      );
+    };
+    const comments = await Comment.paginate({}, option);
+    if (!comments || comments.length === 0) {
+      return res.status(400).json({
+        message: "Không tìm thấy bình luận nào",
+      });
+    }
+
+    const searchDataComment = await searchData(comments);
+    const commentResponse = await { ...comments, docs: searchDataComment };
+
+    return res.status(200).json({
+      message: "lấy danh sách bình luận thành công",
+      commentResponse,
+      pagination: {
+        currentPage: comments.page,
+        totalPages: comments.totalPages,
+        totalItems: comments.totalDocs,
+      },
+    });
   } catch (error) {
     return res.status(500).json({
       message: error.message,

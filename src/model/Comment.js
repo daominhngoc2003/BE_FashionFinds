@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const commentSchema = new mongoose.Schema(
   {
@@ -33,6 +34,9 @@ const commentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
+
+commentSchema.plugin(mongoosePaginate);
 export default mongoose.model("Comment", commentSchema);

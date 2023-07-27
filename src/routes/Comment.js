@@ -4,8 +4,10 @@ import {
   getAllComments,
   getCommentByProduct,
   postReviewComment,
+  searchComment,
 } from "../controller/Comment";
 const router = express.Router();
+router.get("/comments", searchComment);
 router.get("/comments", getAllComments);
 router.post("/comments", postReviewComment);
 router.delete("/comments/:id", deleteComment);
