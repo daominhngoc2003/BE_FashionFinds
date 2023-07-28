@@ -58,6 +58,11 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "member", "customer"],
       default: "customer",
     },
+    cartId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Cart",
+      require: true,
+    },
   },
   { timestamps: true, versionKey: false }
 );

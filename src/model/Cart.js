@@ -9,18 +9,19 @@ const CartSchema = new mongoose.Schema(
     products: [
       {
         productId: {
-          type: String,
+          type: mongoose.Types.ObjectId,
+          ref: "Product",
         },
         price: {
           type: Number,
         },
         quantity: {
-          ttype: Number,
+          type: Number,
         },
       },
     ],
     shippingFee: { type: Number },
-    coupon: { type: Number },
+    counpon: { type: Number },
     totalPrice: { type: Number },
     totalOrder: { type: Number },
   },
