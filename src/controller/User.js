@@ -46,15 +46,7 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res) => {
   const id = req.params.id;
   const formData = req.body;
-  const { email } = req.body;
   try {
-    const checkEmail = await User.findOne({ email });
-    if (checkEmail && checkEmail._id !== id) {
-      return res.status(400).json({
-        success: false,
-        message: "Email đã tồn tại",
-      });
-    }
     const user = await User.findByIdAndUpdate(id, formData);
     if (!user) {
       return res.status(404).json({
