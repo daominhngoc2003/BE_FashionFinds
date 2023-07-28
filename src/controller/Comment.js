@@ -44,7 +44,6 @@ export const postReviewComment = async (req, res) => {
     }
     const user_fullName = user?.user_fullName;
     const user_avatar = user?.user_avatar;
-    console.log(user_fullName, user_avatar);
     const comment = await Comment.create({
       user_fullName,
       user_avatar,

@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getProductByCategory,
   getProductById,
+  getProductBySlug,
   getall,
   updateProduct,
 } from "../controller/Product";
@@ -12,6 +13,7 @@ import { authorization } from "../middleware/Authorization";
 const Router = express.Router();
 Router.get("/products", getall);
 Router.get("/products/:id", getProductById);
+Router.get("/product/:slug/:id", getProductBySlug);
 Router.delete("/products/:id", authenticate, authorization, deleteProduct);
 Router.put("/products/:id", updateProduct);
 Router.post("/products", createProduct);
