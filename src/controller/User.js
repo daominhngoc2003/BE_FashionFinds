@@ -47,8 +47,8 @@ export const updateUser = async (req, res) => {
   const id = req.params.id;
   const formData = req.body;
   try {
-    const user = await User.findByIdAndUpdate(id, formData);
-    if (!user) {
+    const user = await User.findByIdAndUpdate(id, formData, { new: true });
+    if (!user || category.length === 0) {
       return res.status(404).json({
         message: "Không tìm thấy tài khoản",
       });
