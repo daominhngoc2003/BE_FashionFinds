@@ -50,6 +50,7 @@ export const addToCart = async (req, res) => {
       productExist.price =
         getProductPrice.product_price * productExist.quantity;
     }
+    await User.findByIdAndUpdate(userId, { cartId: cart._id });
     // Lưu giỏ hàng
     await cart.save();
     totalOrder(cart);
@@ -117,5 +118,84 @@ export const updateCart = async (req, res) => {
       .json({ message: "Giỏ hàng đã được sửa đổi thành công!", cart });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteProductCart = async (req, res) => {
+  const { productId, userId } = req.body;
+  const id = req.params.id;
+  try {
+    // Kiêm tra xem có tài khoản người dùng k
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(400).json({ message: "Không tìm thấy đơn hàng!" });
+    }
+    await cart.save();
+
+    totalOrder(cart);
+    return res
+      .status(200)
+      .json({ message: "Xóa sản phẩm trong giỏ hàng thành công!", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllCarts = async (req, res) => {
+  try {
+    const data = await Cart.find({});
+    return res
+      .status(200)
+      .json({ message: "Lấy danh sách giỏ hàng thành công!", data });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getCartByUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const data = await Cart.findOne(userId)
+      .populate("products.productId")
+      .populate("userId");
+    if (!data || data.length === 0) {
+      return res.status(400).json({ message: "Không tìm thấy đơn hàng nào!" });
+    }
+    const totalProduct = data?.products.length;
+    totalOrder(data);
+    // await data.save();
+    return res.status(200).json({
+      message: "Lấy danh sách giỏ hàng thành công!",
+      data,
+      totalProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleleAllProductCart = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    // Tìm kiếm giỏ hàng của người dùng
+    const cart = await Cart.findOne({ userId: userId });
+
+    // Nếu không tìm thấy giỏ hàng, trả về lỗi
+    if (!cart) {
+      return res.status(400).json({
+        message: "Không tìm thấy giỏ hàng!",
+      });
+    }
+
+    // Tìm thấy, xóa tất cả sản phẩm trong giỏ hàng
+    cart.products = [];
+    await cart.save();
+    return res
+      .status(200)
+      .json({ message: "Xóa tất cả sản phẩm trong giỏ hàng thành công!" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };

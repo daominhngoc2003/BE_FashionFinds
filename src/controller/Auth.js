@@ -45,18 +45,18 @@ export const login = async (req, res) => {
     //   expiresIn: "1h",
     // });
     // tạo refresh token
-    const refreshToken = generalRefreshToken({
-      _id: user._id,
-      user_email,
-      user_fullName: user.user_fullName,
-      user_avatar: user.user_avatar,
-      user_role: user.user_role,
-    });
-    return res.json({
+    // const refreshToken = generalRefreshToken({
+    //   _id: user._id,
+    //   user_email,
+    //   user_fullName: user.user_fullName,
+    //   user_avatar: user.user_avatar,
+    //   user_role: user.user_role,
+    // });
+    return res.status(200).json({
       message: "Đăng nhập thành công",
       user,
       accessToken,
-      refreshToken,
+      // refreshToken,
     });
   } catch (error) {
     return res.status(500).json({
