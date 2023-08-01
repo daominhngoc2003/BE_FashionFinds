@@ -23,7 +23,7 @@ const CartSchema = new mongoose.Schema(
     shippingFee: { type: Number },
     counpon: { type: Number },
     totalPrice: { type: Number },
-    totalOrder: { type: Number },
+    totalOrder: { type: Number, required: true, min: 0 },
   },
   { timestamps: true, versionKey: false }
 );

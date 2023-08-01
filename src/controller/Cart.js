@@ -64,17 +64,21 @@ export const addToCart = async (req, res) => {
 };
 
 // Hàm tính tổng giá tất cả sản phẩm trong giỏ hàng
-export const totalOrder = async (cart) => {
+const handleTotalOrder = async (cart) => {
   try {
+    // Tính tổng giá của giỏ hàng
     const total = cart.products.reduce((accumulator, product) => {
       return accumulator + product.price;
     }, 0);
+
     cart.totalPrice = total;
     cart.totalOrder = cart.totalPrice + cart.shippingFee;
     await cart.save();
     return cart;
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
