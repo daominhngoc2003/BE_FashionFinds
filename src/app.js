@@ -9,6 +9,7 @@ import CategoryRouter from "./routes/Category";
 import uploadRouter from "./routes/upload";
 import CommentRouter from "./routes/Comment";
 import CartRouter from "./routes/Cart";
+import BillRouter from "./routes/Bill";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api", AuthRouter);
 app.use("/api", uploadRouter);
 app.use("/api", CommentRouter);
 app.use("/api", CartRouter);
+app.use("/api", BillRouter);
 
 // KẾT NỐI MONGO
 connectDB(process.env.MONGO_URL);

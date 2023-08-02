@@ -63,6 +63,7 @@ const userSchema = new mongoose.Schema(
       ref: "Cart",
       require: true,
     },
+    bills: [{ billId: { type: mongoose.Schema.Types.ObjectId, ref: "Bill" } }],
   },
   { timestamps: true, versionKey: false }
 );

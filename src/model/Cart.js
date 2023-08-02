@@ -18,12 +18,20 @@ const CartSchema = new mongoose.Schema(
         quantity: {
           type: Number,
         },
+        size: {
+          type: String,
+          default: "freeSize",
+        },
+        color: {
+          type: String,
+          default: "black",
+        },
       },
     ],
     shippingFee: { type: Number },
     counpon: { type: Number },
     totalPrice: { type: Number },
-    totalOrder: { type: Number, required: true, min: 0 },
+    totalOrder: { type: Number, min: 0 },
   },
   { timestamps: true, versionKey: false }
 );
