@@ -74,23 +74,11 @@ export const addToCart = async (req, res) => {
     const savedCartItem = await cartItem.save();
     // Trả về thông tin sản phẩm đã thêm vào giỏ hàng
     res.json(savedCartItem);
-
   } catch (error) {
     res.status(500).json({ error: "Internal server error." });
   }
 };
 
-// Get ALL cart items
-export const getAllCarts = async (req, res) => {
-  try {
-    const carts = await Cart.find();
-    if (carts.length > 0) {
-      return res.status(200).json({ carts });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: "Lỗi server: " + error.message });
-  }
-};
 // Get  Cart items by User
 export const getCartByUser = async (req, res) => {
   const userId = req.params.id;
@@ -206,32 +194,6 @@ export const getAllCarts = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Lấy danh sách giỏ hàng thành công!", data });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const getCartByUser = async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const data = await Cart.findOne({ userId })
-      .populate(
-        "products.productId",
-        "product_name product_price product_discount product_images _id"
-      )
-      .populate("userId");
-
-    if (!data) {
-      return res.status(400).json({ message: "Không tìm thấy đơn hàng nào!" });
-    }
-    const totalProduct = data?.products.length;
-
-    totalOrder(data);
-    return res.status(200).json({
-      message: "Lấy danh sách giỏ hàng thành công!",
-      data,
-      totalProduct,
-    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

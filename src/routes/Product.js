@@ -11,7 +11,7 @@ import {
 import { authenticate } from "../middleware/Authenticate";
 import { authorization } from "../middleware/Authorization";
 const Router = express.Router();
-Router.get("/products", getall);
+Router.get("/products", authenticate, getall);
 Router.get("/products/:id", getProductById);
 Router.get("/product/:slug/:id", getProductBySlug);
 Router.delete("/products/:id", authorization, authenticate, deleteProduct);
