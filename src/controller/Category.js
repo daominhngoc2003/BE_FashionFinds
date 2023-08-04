@@ -145,13 +145,6 @@ export const updateCategory = async (req, res) => {
         message: error.details[0].message,
       });
     }
-    // KIỂM TRA XEM CATEGORY ĐÃ TỒN TẠI
-    // const data = await Category.findOne({ category_name });
-    // if (data) {
-    //   return res.status(400).json({
-    //     message: "Tên danh mục đã tồn tại",
-    //   });
-    // }
     const newSlug = slugify(category_name, { lower: true });
 
     const category = await Category.findByIdAndUpdate(

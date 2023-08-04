@@ -10,11 +10,11 @@ const commentSchema = new mongoose.Schema(
     },
     user_fullName: {
       type: String,
-      required: true,
+      // required: true,
     },
     user_avatar: {
       type: String,
-      required: true,
+      // required: true,
     },
     rating: {
       type: Number,
