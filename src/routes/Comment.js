@@ -13,5 +13,5 @@ router.get("/comments", authenticate, searchComment);
 router.get("/comments", getAllComments);
 router.post("/comments", authenticate, postReviewComment);
 router.delete("/comments/:id", authenticate, authorization, deleteComment);
-router.get("/comments/:id", authenticate, getCommentByProduct);
+router.get("/comments/:id", getCommentByProduct);
 export default router;
