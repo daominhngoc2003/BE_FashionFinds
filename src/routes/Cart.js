@@ -5,15 +5,14 @@ import {
   getAllCarts,
   getCartByUser,
   deleteCartItem,
-
 } from "../controller/Cart";
+import { authenticate } from "../middleware/Authenticate";
 
 const router = express.Router();
-router.get("/cart", getAllCarts);
+router.get("/cart", authenticate, getAllCarts);
 router.get("/cart/:id/getCartByUser", getCartByUser);
-router.post("/cart/addToCart", addToCart);
-router.put("/cart/:id", updateCart);
-router.delete("/cart/:id", deleteCartItem);
-
+router.post("/cart/addToCart", authenticate, addToCart);
+router.put("/cart/:id", authenticate, updateCart);
+router.delete("/cart/:id", authenticate, deleteCartItem);
 
 export default router;

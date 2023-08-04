@@ -13,7 +13,7 @@ import { authorization } from "../middleware/Authorization";
 import { authenticate } from "../middleware/Authenticate";
 
 const router = express.Router();
-router.get("/categories", getAllcategory);
+router.get("/categories", authenticate, getAllcategory);
 router.get("/categories/:id", getCategoryById);
 router.get("/category/:slug", getCategoryBySlug);
 router.post("/categories", authorization, authenticate, create);
