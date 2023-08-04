@@ -3,35 +3,39 @@ import mongoose from "mongoose";
 const CartSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
-    products: [
-      {
-        productId: {
-          type: mongoose.Types.ObjectId,
-          ref: "Product",
-        },
-        price: {
-          type: Number,
-        },
-        quantity: {
-          type: Number,
-        },
-        size: {
-          type: String,
-          default: "freeSize",
-        },
-        color: {
-          type: String,
-          default: "black",
-        },
-      },
-    ],
-    shippingFee: { type: Number },
-    counpon: { type: Number },
-    totalPrice: { type: Number },
-    totalOrder: { type: Number, min: 0 },
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    product_name: {
+      type: String,
+      required: true,
+    },
+    product_image: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
   },
   { timestamps: true, versionKey: false }
 );
