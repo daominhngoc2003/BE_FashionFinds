@@ -6,10 +6,12 @@ import {
   postReviewComment,
   searchComment,
 } from "../controller/Comment";
+import { authenticate } from "../middleware/Authenticate";
+import { authorization } from "../middleware/Authorization";
 const router = express.Router();
-router.get("/comments", searchComment);
+router.get("/comments", authenticate, searchComment);
 router.get("/comments", getAllComments);
-router.post("/comments", postReviewComment);
-router.delete("/comments/:id", deleteComment);
-router.get("/comments/:id", getCommentByProduct);
+router.post("/comments", authenticate, postReviewComment);
+router.delete("/comments/:id", authenticate, authorization, deleteComment);
+router.get("/comments/:id", authenticate, getCommentByProduct);
 export default router;
