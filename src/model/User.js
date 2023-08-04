@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import mongoosePaginate from "mongoose-paginate-v2";
 const userSchema = new mongoose.Schema(
   {
     user_fullName: {
@@ -55,7 +55,6 @@ const userSchema = new mongoose.Schema(
     user_role: {
       type: String,
       require: true,
-      enum: ["admin", "member", "customer"],
       default: "customer",
     },
     cartId: {
@@ -67,5 +66,5 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
-
+userSchema.plugin(mongoosePaginate);
 export default mongoose.model("User", userSchema);

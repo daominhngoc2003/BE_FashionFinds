@@ -82,11 +82,13 @@ export const postReviewComment = async (req, res) => {
 export const deleteComment = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const deleted = await Comment.deleteOne({ _id: id });
+    const deleted = await Comment.findByIdAndDelete(id);
     if (deleted)
-      return res
-        .status(200)
-        .json({ success: true, message: "Đã xóa thành công đánh giá này!" });
+      return res.status(200).json({
+        success: true,
+        message: "Đã xóa thành công đánh giá này!",
+        deleted,
+      });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

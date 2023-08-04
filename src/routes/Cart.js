@@ -10,7 +10,7 @@ import { authenticate } from "../middleware/Authenticate";
 
 const router = express.Router();
 router.get("/cart", authenticate, getAllCarts);
-router.get("/cart/:id/getCartByUser", getCartByUser);
+router.get("/cart/:id/getCartByUser", authenticate, getCartByUser);
 router.post("/cart/addToCart", authenticate, addToCart);
 router.put("/cart/:id", authenticate, updateCart);
 router.delete("/cart/:id", authenticate, deleteCartItem);
