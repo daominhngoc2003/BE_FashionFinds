@@ -84,7 +84,7 @@ export const getUserById = async (req, res) => {
     }
     return res.status(200).json({
       user,
-      message: "Lấy sản phẩm thành công",
+      message: "Lấy tài khoản thành công",
     });
   } catch (error) {
     return res.status(500).json(error.message);

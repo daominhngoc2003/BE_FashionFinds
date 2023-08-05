@@ -31,7 +31,6 @@ export const login = async (req, res) => {
         message: "Mật khẩu không tồn tại",
       });
     }
-    user.user_password = undefined;
 
     // tạo access token
     const accessToken = generalAccessToken({
@@ -41,9 +40,10 @@ export const login = async (req, res) => {
       user_avatar: user.user_avatar,
       user_role: user.user_role,
     });
-    // const accessToken = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
-    //   expiresIn: "1h",
-    // });
+
+    // Lưu accessToken vào cơ sở dữ liệu
+    // user.accessToken = accessToken;
+    await user.save();
     // tạo refresh token
     // const refreshToken = generalRefreshToken({
     //   _id: user._id,
@@ -54,8 +54,8 @@ export const login = async (req, res) => {
     // });
     return res.status(200).json({
       message: "Đăng nhập thành công",
-      user,
       accessToken,
+      user,
       // refreshToken,
     });
   } catch (error) {
@@ -94,7 +94,7 @@ export const register = async (req, res) => {
       user_password: hashPassword,
     });
 
-    user.user_password = undefined;
+    // user.user_password = undefined;
 
     // tạo access token
     const accessToken = generalAccessToken({
