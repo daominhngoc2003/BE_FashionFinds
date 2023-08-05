@@ -71,9 +71,9 @@ export const addToCart = async (req, res) => {
       cartItem.quantity += quantity;
     }
     // Lưu hoặc cập nhật sản phẩm vào giỏ hàng
-    const savedCartItem = await cartItem.save();
+    const carts = await cartItem.save();
     // Trả về thông tin sản phẩm đã thêm vào giỏ hàng
-    res.json(savedCartItem);
+    res.json({ carts, messages: "Thêm giỏ hàng thành công!" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error." });
   }
@@ -85,7 +85,7 @@ export const getCartByUser = async (req, res) => {
   try {
     const carts = await Cart.find({ userId });
     if (carts.length > 0) {
-      return res.status(200).json({ carts });
+      return res.status(200).json({ carts, message: "Get All Cart by User" });
     }
   } catch (error) {
     return res.status(500).json({ message: "Lỗi server: " + error.message });
@@ -163,26 +163,21 @@ export const updateCart = async (req, res) => {
 };
 
 export const deleteProductCart = async (req, res) => {
-  const { productId, userId } = req.body;
   const id = req.params.id;
+  console.log(id);
+  console.log("asdadadsasd");
   try {
-    // Kiêm tra xem có tài khoản người dùng k
-    const cart = await Cart.findOne({ userId });
-    if (!cart) {
-      return res.status(400).json({ message: "Không tìm thấy đơn hàng!" });
-    }
-
-    const data = await Cart.findByIdAndDelete(productId);
-    if (!data) {
+    return;
+    const carts = await Cart.findByIdAndDelete({ _id: id });
+    if (!carts) {
       return res
         .status(400)
         .json({ message: "Xóa đơn hàng không thành công!" });
     }
-    await cart.save();
-    totalOrder(cart);
+    console.log("carts", carts);
     return res
       .status(200)
-      .json({ message: "Xóa sản phẩm trong giỏ hàng thành công!", data });
+      .json({ message: "Xóa sản phẩm trong giỏ hàng thành công!", carts });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
