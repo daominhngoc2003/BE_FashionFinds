@@ -18,12 +18,12 @@ const ProductSchema = new mongoose.Schema(
     },
     product_size: {
       type: String,
-      enum: ["xl", "l", "x", "m", "s"],
+      // enum: ["xl", "l", "x", "m", "s"],
       default: "l",
     },
     product_color: {
       type: String,
-      enum: ["blue", "white", "black"],
+      // enum: ["blue", "white", "black"],
       default: "black",
     },
     product_images: {
